@@ -3,16 +3,18 @@
 Boat::Boat() {
 }
 
-void Boat::place(int xpos, texture* t, Water* w) {
+void Boat::place(int xpos, texture* t, Water* w, struct list** b) {
 	x = xpos;
 	alive = true;
 	tex_index = 10;
 	tex = t;
 	water = w;
+	vel = 0;
+	bullets = b;
 }
 
 void Boat::show() {
-	apply_surface(x, y, BOAT_WIDTH, BOAT_HEIGHT, tex[tex_index]);
+	apply_surface((int)x, (int)y, BOAT_WIDTH, BOAT_HEIGHT, tex[tex_index]);
 }
 
 void Boat::floatUp() {
@@ -25,4 +27,8 @@ void Boat::floatUp() {
 	int avg = sum / BOAT_WIDTH;
 	
 	y = (SCREEN_HEIGHT / 2) - (BOAT_HEIGHT / 2) - avg;
+}
+
+void Boat::hit() {
+	health -= BULLET_DAMAGE;
 }

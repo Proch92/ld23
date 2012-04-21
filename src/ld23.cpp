@@ -49,7 +49,7 @@ void *load_image(texture *tex, /*std::string*/char* filename, int w, int h) {
 }
 
 void apply_surface( int x, int y, int w, int h, texture tex) {
-	glBindTexture(GL_TEXTURE_2D, tex.id);        
+	glBindTexture(GL_TEXTURE_2D, tex.id);
 	
 	glBegin(GL_POLYGON);
 		glTexCoord2f(0.0, 0.0); glVertex2f(x, y);

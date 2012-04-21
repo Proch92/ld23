@@ -1,16 +1,18 @@
 class Boat {
 	public:
 		Boat();
-		void place(int, texture*, Water*);
+		void place(int, texture*, Water*, struct list**);
 		void show();
 		void floatUp();
+		void hit();
 	protected:
-		int x, y;
+		float x, y;
 		int health;
 		int max_health;
 		Uint8 tex_index;
 		texture* tex;
-	private:
+		float vel;
+		struct list **bullets;
 		Water *water;
 		bool alive;
 };

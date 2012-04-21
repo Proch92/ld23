@@ -1,6 +1,6 @@
 //water proprierties
 #define VISCOSITY 2 //more viscosity ---> lower value
-#define DENSITY 3 //more density ---> lower value
+#define DENSITY 2 //more density ---> lower value
 
 //water random initialization
 const int W_AMPLITUDE = 200;

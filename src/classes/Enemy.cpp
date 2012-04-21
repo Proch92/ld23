@@ -1,22 +1,18 @@
 #include "../include.h"
 
-User::User() {
+Enemy::Enemy() {
 }
 
-void User::place(int xpos, SDL_Event *e, texture* t, Water* w, struct list **b) {
+void Enemy::place(int xpos, texture* t, Water* w, struct list **b) {
 	Boat::place(xpos, t, w, b);
-	event = e;
-	max_health = USER_INIT_HEALTH;
+	max_health = 1000;
 	health = max_health;
-	tex_index = 10;
-	right_down = false;
-	left_down = false;
-	action_down = false;
+	tex_index = 11;
 	reload.start();
 	reload_time = 1000;
 }
 
-void User::move() {
+void Enemy::move() {
 	
 	if(right_down)
 		vel += BOAT_ACCELL;
@@ -44,32 +40,16 @@ void User::move() {
 		else
 			water->giveInput(x + BOAT_WIDTH - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -2);
 	}
+}
+
+void Enemy::ai() {
+	//OMG!!
+	//keep the distance and shot when the user is in the right distance
+}
+
+void Enemy::action() {
+	reload.start();
 	
-	//action
-	if(action_down && reload.get_ticks() > reload_time) {
-		action();
-		reload.start();
-	}
-}
-
-void User::handle_input() {
-	if(event->type == SDL_KEYDOWN)
-		switch(event->key.keysym.sym) {
-			case SDLK_d: right_down = true; break;
-			case SDLK_a: left_down = true; break;
-			case SDLK_j: action_down = true; break;
-			default: break;
-		}
-	if(event->type == SDL_KEYUP)
-		switch(event->key.keysym.sym) {
-			case SDLK_d: right_down = false; break;
-			case SDLK_a: left_down = false; break;
-			case SDLK_j: action_down = false; break;
-			default: break;
-		}
-}
-
-void User::action() {
 	Bullet *tmp;
 	tmp = (Bullet*) malloc(sizeof(Bullet));
 	tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2), (vel>0)?1:(-1), -1, tex, 20);

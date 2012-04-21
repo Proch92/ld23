@@ -10,5 +10,8 @@ class Game {
 		SDL_Event event;
 		Water water;
 		User user;
+		struct list *bullets;
+		
+		//temp
+		Enemy enemy;
 };
-
