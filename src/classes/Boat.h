@@ -5,13 +5,13 @@ class Boat {
 		void show();
 		void floatUp();
 		void hit();
-	protected:
 		float x, y;
+		float vel;
+	protected:
 		int health;
 		int max_health;
 		Uint8 tex_index;
 		texture* tex;
-		float vel;
 		struct list **bullets;
 		Water *water;
 		bool alive;

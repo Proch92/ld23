@@ -40,9 +40,9 @@ void User::move() {
 	
 	if(right_down xor left_down) {
 		if(right_down)
-			water->giveInput(x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -2);
+			water->giveInput(x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -1);
 		else
-			water->giveInput(x + BOAT_WIDTH - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -2);
+			water->giveInput(x + BOAT_WIDTH - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -1);
 	}
 	
 	//action

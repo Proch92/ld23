@@ -14,7 +14,7 @@ Game::Game() {
 	user.place(300, &event, textures, &water, &bullets);
 	
 	//---- TEMP ---- spawn enemy
-	enemy.place(500, textures, &water, &bullets); 
+	enemy.place(500, textures, &water, &bullets, &user); 
 	
 	//misc
 	bullets = NULL;
@@ -47,6 +47,8 @@ void Game::start() {
 		
 		//TEMP
 		enemy.floatUp();
+		enemy.ai();
+		enemy.move();
 		
 		//move bullets
 		struct list *tmp, *prev;

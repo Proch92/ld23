@@ -16,8 +16,8 @@ struct list {
 #include "classes/Water.h"
 #include "classes/Bullet.h"
 #include "classes/Boat.h"
-#include "classes/Enemy.h"
 #include "classes/User.h"
+#include "classes/Enemy.h"
 #include "classes/Game.h"
 #include "classes/utils/Button.h"
 
@@ -44,3 +44,7 @@ const float GRAVITY = 0.01;
 #define BULLET_WIDTH 8
 #define BULLET_HEIGHT 8
 #define BULLET_DAMAGE 1001
+
+//ai
+#define AI_DISTANCE 200
+#define AI_RANGE_OK 20
