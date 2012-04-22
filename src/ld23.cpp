@@ -107,7 +107,7 @@ bool init() {
 	
 	if(init_GL() == false) return false;
 	
-	SDL_WM_SetCaption( "ld23", NULL );
+	SDL_WM_SetCaption( "Just My Immagination", NULL );
 	
 	SDL_EnableUNICODE(1);
 

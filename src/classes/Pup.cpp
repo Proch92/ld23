@@ -31,6 +31,9 @@ void Pup::pickup(void* boat) {
 		case 2:
 			((Boat*)boat)->double_shot();
 			break;
+		case 4:
+			((Boat*)boat)->give_health(-10000);
+			break;
 		default: break;
 	}
 }

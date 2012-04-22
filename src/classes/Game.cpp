@@ -53,7 +53,7 @@ void Game::start() {
 		if(rand()%1000 < 2) {
 			Pup *tmp;
 			tmp = (Pup*) malloc(sizeof(Pup));
-			tmp->spawn((rand()%(WATER_WIDTH - PUP_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, rand()%3);
+			tmp->spawn((rand()%(WATER_WIDTH - PUP_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, rand()%4);
 			tmp->next = pups;
 			pups = tmp;
 		}		
@@ -141,8 +141,7 @@ void Game::start() {
 		while(bullet_ptr != NULL) {
 			bullet_ptr->move();
 			if(bullet_ptr->y > (SCREEN_HEIGHT / 2)) {
-				if(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2) >= 0 && bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2) < WATER_WIDTH)
-					water.giveInput(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), 40);
+				water.giveInput(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), 35);
 				
 				if(bullet_ptr->x < user.x + BOAT_WIDTH && bullet_ptr->x + BULLET_WIDTH > user.x)
 					user.hit();
@@ -229,6 +228,7 @@ void Game::load_textures() {
 	load_image(&textures[15], "src/data/pups/healthpack.bmp", PUP_WIDTH, PUP_HEIGHT);
 	load_image(&textures[16], "src/data/pups/healthaug.bmp", PUP_WIDTH, PUP_HEIGHT);
 	load_image(&textures[17], "src/data/pups/doubleshot.bmp", PUP_WIDTH, PUP_HEIGHT);
+	load_image(&textures[18], "src/data/pups/death.bmp", PUP_WIDTH, PUP_HEIGHT);
 	//bullet
 	load_image(&textures[20], "src/data/bullet/bullet.bmp", BULLET_WIDTH, BULLET_HEIGHT);
 }

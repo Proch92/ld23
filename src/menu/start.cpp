@@ -10,8 +10,8 @@ int menu_start() {
 	
 	load_menu_tex(start);
 	
-	Button playB((SCREEN_WIDTH - start[1].w) / 2, 40, start[1].w, start[1].h, &start[1]);
-	Button exitB((SCREEN_WIDTH - start[2].w) / 2, 80, start[2].w, start[2].h, &start[2]);
+	Button playB((SCREEN_WIDTH - start[1].w) / 2, 60, start[1].w, start[1].h, &start[1]);
+	Button exitB((SCREEN_WIDTH - start[2].w) / 2, 130, start[2].w, start[2].h, &start[2]);
 	
 	fps.start();
 	
@@ -27,6 +27,9 @@ int menu_start() {
 		//show other buttons
 		playB.show();
 		exitB.show();
+		
+		//show banner
+		apply_surface(200, 250, 400, 200, start[3]);
 		
 		SDL_GL_SwapBuffers(); //update screen
 		
@@ -45,6 +48,7 @@ int menu_start() {
 
 void load_menu_tex(texture* tex) {
 	load_image(&tex[0], "src/data/menu/start/bg.bmp", 2, 2);
-	load_image(&tex[1], "src/data/menu/start/play.bmp", 60, 15);
-	load_image(&tex[2], "src/data/menu/start/exit.bmp", 60, 15);
+	load_image(&tex[1], "src/data/menu/start/play.bmp", 100, 30);
+	load_image(&tex[2], "src/data/menu/start/exit.bmp", 100, 30);
+	load_image(&tex[3], "src/data/menu/start/banner.bmp", 400, 200);
 }

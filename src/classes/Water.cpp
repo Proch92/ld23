@@ -152,9 +152,12 @@ void Water::show() {
 }
 
 void Water::giveInput(int x, float value) {
-	particles[x].vel -= value;
+	if(x >= 0 && x < LENGHT)
+		particles[x].vel -= value;
 }
 
 int Water::operator [] (int n) {
-	return (int)(particles[n].height);
+	if(n >= 0 && n < LENGHT)
+		return (int)(particles[n].height);
+	return 0;
 }
