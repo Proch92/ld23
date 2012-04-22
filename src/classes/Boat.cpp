@@ -32,3 +32,7 @@ void Boat::floatUp() {
 void Boat::hit() {
 	health -= BULLET_DAMAGE;
 }
+
+bool Boat::death() {
+	return (health <= 0);
+}

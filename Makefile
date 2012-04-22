@@ -1,5 +1,5 @@
-exe: clean main game boat water timer menu button user bullet enemy
-	g++ -o ld23 ld23.o Game.o Boat.o Water.o Timer.o start.o Button.o User.o Bullet.o Enemy.o -lSDL -lSDL_image -lGL -lGLU
+exe: clean main game boat water timer menu button user bullet enemy pup
+	g++ -o ld23 ld23.o Game.o Boat.o Water.o Timer.o start.o Button.o User.o Bullet.o Pup.o Enemy.o -lSDL -lSDL_image -lGL -lGLU
 	rm -rf *.o
 main: src/ld23.cpp
 	g++ -c src/ld23.cpp
@@ -21,5 +21,7 @@ bullet: src/classes/Bullet.cpp
 	g++ -c src/classes/Bullet.cpp
 enemy: src/classes/Enemy.cpp
 	g++ -c src/classes/Enemy.cpp
+pup: src/classes/Pup.cpp
+	g++ -c src/classes/Pup.cpp
 clean:
 	rm -rf *.o

@@ -7,6 +7,7 @@ class Boat {
 		void hit();
 		float x, y;
 		float vel;
+		bool death();
 	protected:
 		int health;
 		int max_health;

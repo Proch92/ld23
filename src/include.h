@@ -18,6 +18,7 @@ struct list {
 #include "classes/Boat.h"
 #include "classes/User.h"
 #include "classes/Enemy.h"
+#include "classes/Pup.h"
 #include "classes/Game.h"
 #include "classes/utils/Button.h"
 
@@ -48,3 +49,6 @@ const float GRAVITY = 0.01;
 //ai
 #define AI_DISTANCE 200
 #define AI_RANGE_OK 20
+
+#define PUP_WIDTH 16
+#define PUP_HEIGHT 16

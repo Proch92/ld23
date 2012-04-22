@@ -44,7 +44,6 @@ void Enemy::move() {
 }
 
 void Enemy::ai() {
-	//OMG!!
 	//keep the distance and shot when the user is in the right distance
 	int distance;
 	distance = (int)x - (int)user->x;
@@ -75,7 +74,7 @@ void Enemy::action() {
 	
 	Bullet *tmp;
 	tmp = (Bullet*) malloc(sizeof(Bullet));
-	tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2), (vel>0)?1:(-1), -1, tex, 20);
+	tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, (vel>0)?1:(-1), -1, tex, 20);
 	struct list *new_elem;
 	new_elem = (struct list*) malloc(sizeof(struct list));
 	new_elem->data = tmp;
