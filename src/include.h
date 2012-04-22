@@ -45,7 +45,7 @@ const float GRAVITY = 0.01;
 #define AI_DISTANCE 200
 #define AI_RANGE_OK 20
 
-#define PUP_WIDTH 16
-#define PUP_HEIGHT 16
+#define PUP_WIDTH 32
+#define PUP_HEIGHT 32
 
 #define DOUBLE_SHOT_TIME 10000

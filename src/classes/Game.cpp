@@ -9,7 +9,6 @@ Game::Game() {
 	
 	//create water
 	water.init(((SCREEN_WIDTH - WATER_WIDTH) / 2), 0);
-	water.randomInit();
 	
 	//spawn character
 	user.place(300, &event, textures, &water, &bullets);
@@ -142,7 +141,8 @@ void Game::start() {
 		while(bullet_ptr != NULL) {
 			bullet_ptr->move();
 			if(bullet_ptr->y > (SCREEN_HEIGHT / 2)) {
-				water.giveInput(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), 40);
+				if(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2) >= 0 && bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2) < WATER_WIDTH)
+					water.giveInput(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), 40);
 				
 				if(bullet_ptr->x < user.x + BOAT_WIDTH && bullet_ptr->x + BULLET_WIDTH > user.x)
 					user.hit();

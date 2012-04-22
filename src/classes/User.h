@@ -4,6 +4,7 @@ class User : public Boat {
 		void place(int, SDL_Event*, texture*, Water*, Bullet**);
 		void handle_input();
 		void move();
+		void show();
 	private:
 		void action();
 		SDL_Event *event;

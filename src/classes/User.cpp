@@ -45,7 +45,7 @@ void User::move() {
 			water->giveInput(x + BOAT_WIDTH - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -1);
 	}
 	
-	//stop doublew shot powerup
+	//stop double shot powerup
 	if(pup_timer.get_ticks() > DOUBLE_SHOT_TIME) {
 		double_shot_on = false;
 		pup_timer.stop();
@@ -99,4 +99,29 @@ void User::action() {
 		tmp->next = *bullets;
 		*bullets = tmp;
 	}
+}
+
+
+void User::show() {
+	Boat::show();
+	
+	//health bar
+	int xb, yb, wb, hb;
+	
+	xb = x;
+	yb = y - 5;
+	hb = 3;
+	wb = (health * BOAT_WIDTH) / USER_INIT_HEALTH;
+	
+	glDisable(GL_TEXTURE_2D);
+	glColor4f(1.0, 0.0, 0.0, 1.0);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBegin(GL_POLYGON);
+		glVertex2i(xb, yb);
+		glVertex2i(xb + wb, yb);
+		glVertex2i(xb + wb, yb + hb);
+		glVertex2i(xb, yb + hb);
+	glEnd();
+	glColor4f(1.0, 1.0, 1.0, 1.0); //normal color
+	glEnable(GL_TEXTURE_2D);
 }

@@ -17,11 +17,10 @@ int main() {
 	if(!init()) return 0;
 	
 	response = menu_start();
-	while(response) {
-		response = false;
+	if(response) {
 		intro();
 		Game game;
-		response = game_over_screen();
+		game_over_screen();
 	}
 	
 	clean_up();
@@ -121,7 +120,7 @@ void clean_up() {
 }
 
 void intro() {
-	texture pages[6];
+	texture pages[7];
 	
 	load_image(&pages[0], "src/data/story/1.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
 	load_image(&pages[1], "src/data/story/2.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -129,6 +128,7 @@ void intro() {
 	load_image(&pages[3], "src/data/story/4.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
 	load_image(&pages[4], "src/data/story/5.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
 	load_image(&pages[5], "src/data/story/6.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[6], "src/data/story/istr.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	bool quit = false;
 	SDL_Event event;
@@ -155,7 +155,7 @@ void intro() {
 		if(clicked)
 			page_number++;
 		
-		if(page_number == 6)
+		if(page_number == 7)
 			quit = true;
 		
 		fps.start();
@@ -177,9 +177,6 @@ bool game_over_screen() {
 		while(SDL_PollEvent(&event)) {
 			if(event.type == SDL_MOUSEBUTTONDOWN)
 				return false;
-			if(event.type == SDL_KEYDOWN)
-				if(event.key.keysym.sym == SDLK_r)
-					return true;
 		}
 		
 		apply_surface(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, gameover);
