@@ -4,11 +4,11 @@ Pup::Pup() {
 	
 }
 
-void Pup::spawn(int xpos, texture* t, int t_i) {
+void Pup::spawn(int xpos, texture* t, int t_p) {
 	x = xpos;
 	y = 0;
 	tex = t;
-	type = t_i;
+	type = t_p;
 	tex_index = 15 + type;
 }
 
@@ -20,6 +20,17 @@ void Pup::move() {
 	y++;
 }
 
-void Pup::pickup(void*) {
-	
+void Pup::pickup(void* boat) {
+	switch(type) {
+		case 0:
+			((Boat*)boat)->give_health(200);
+			break;
+		case 1:
+			((Boat*)boat)->max_health += 100;
+			break;
+		case 2:
+			((Boat*)boat)->double_shot();
+			break;
+		default: break;
+	}
 }

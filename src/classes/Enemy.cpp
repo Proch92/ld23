@@ -3,7 +3,7 @@
 Enemy::Enemy() {
 }
 
-void Enemy::place(int xpos, texture* t, Water* w, struct list **b, User* u) {
+void Enemy::place(int xpos, texture* t, Water* w, Bullet **b, User* u) {
 	Boat::place(xpos, t, w, b);
 	max_health = 1000;
 	health = max_health;
@@ -11,6 +11,7 @@ void Enemy::place(int xpos, texture* t, Water* w, struct list **b, User* u) {
 	reload.start();
 	reload_time = 1000;
 	user = u;
+	user_direction = -1; //left default
 }
 
 void Enemy::move() {
@@ -48,6 +49,11 @@ void Enemy::ai() {
 	int distance;
 	distance = (int)x - (int)user->x;
 	
+	if(distance < 0)
+		user_direction = 1;
+	else
+		user_direction = -1;
+	
 	if(AI_DISTANCE - abs(distance) < AI_RANGE_OK)
 		if(reload.get_ticks() > reload_time)
 			action();
@@ -73,11 +79,22 @@ void Enemy::action() {
 	reload.start();
 	
 	Bullet *tmp;
-	tmp = (Bullet*) malloc(sizeof(Bullet));
-	tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, (vel>0)?1:(-1), -1, tex, 20);
-	struct list *new_elem;
-	new_elem = (struct list*) malloc(sizeof(struct list));
-	new_elem->data = tmp;
-	new_elem->next = *bullets;
-	*bullets = new_elem;
+	
+	if(!double_shot_on) {		
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, user_direction, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+	}
+	else {
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, 1, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+		
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, -1, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+	}
 }

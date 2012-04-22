@@ -7,11 +7,6 @@ struct texture {
 	unsigned int h;
 };
 
-struct list {
-	void* data;
-	struct list *next;
-};
-
 #include "classes/utils/Timer.h"
 #include "classes/Water.h"
 #include "classes/Bullet.h"
@@ -22,7 +17,7 @@ struct list {
 #include "classes/Game.h"
 #include "classes/utils/Button.h"
 
-void *load_image(texture *tex, /*std::string*/char* filename, int w, int h);
+void *load_image(texture *tex, /*std::string*/const char* filename, int w, int h);
 void apply_surface( int x, int y, int w, int h, texture tex);
 void drawLine(int x1, int y1, int x2, int y2);
 
@@ -52,3 +47,5 @@ const float GRAVITY = 0.01;
 
 #define PUP_WIDTH 16
 #define PUP_HEIGHT 16
+
+#define DOUBLE_SHOT_TIME 10000

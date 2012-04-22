@@ -6,6 +6,7 @@ class Pup {
 		void show();
 		void pickup(void*);
 		int x, y;
+		Pup *next;
 	private:
 		int type;
 		Uint8 tex_index;

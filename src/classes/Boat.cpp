@@ -3,7 +3,7 @@
 Boat::Boat() {
 }
 
-void Boat::place(int xpos, texture* t, Water* w, struct list** b) {
+void Boat::place(int xpos, texture* t, Water* w, Bullet** b) {
 	x = xpos;
 	alive = true;
 	tex_index = 10;
@@ -35,4 +35,17 @@ void Boat::hit() {
 
 bool Boat::death() {
 	return (health <= 0);
+}
+
+void Boat::give_health(int value) {
+	health += value;
+	
+	if(health > max_health)
+		health = max_health;
+}
+
+
+void Boat::double_shot() {
+	double_shot_on = true;
+	pup_timer.start();
 }

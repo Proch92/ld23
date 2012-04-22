@@ -3,7 +3,7 @@
 User::User() {
 }
 
-void User::place(int xpos, SDL_Event *e, texture* t, Water* w, struct list **b) {
+void User::place(int xpos, SDL_Event *e, texture* t, Water* w, Bullet **b) {
 	Boat::place(xpos, t, w, b);
 	event = e;
 	max_health = USER_INIT_HEALTH;
@@ -45,6 +45,12 @@ void User::move() {
 			water->giveInput(x + BOAT_WIDTH - ((SCREEN_WIDTH - WATER_WIDTH) / 2), -1);
 	}
 	
+	//stop doublew shot powerup
+	if(pup_timer.get_ticks() > DOUBLE_SHOT_TIME) {
+		double_shot_on = false;
+		pup_timer.stop();
+	}		
+	
 	//action
 	if(action_down && reload.get_ticks() > reload_time) {
 		action();
@@ -71,11 +77,26 @@ void User::handle_input() {
 
 void User::action() {
 	Bullet *tmp;
-	tmp = (Bullet*) malloc(sizeof(Bullet));
-	tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, (vel>0)?1:(-1), -1, tex, 20);
-	struct list *new_elem;
-	new_elem = (struct list*) malloc(sizeof(struct list));
-	new_elem->data = tmp;
-	new_elem->next = *bullets;
-	*bullets = new_elem;
+	
+	if(!double_shot_on) {
+		int direction = -1; //left default
+		if(right_down && !left_down)
+			direction = 1; //right
+		
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, direction, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+	}
+	else {
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, 1, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+		
+		tmp = (Bullet*) malloc(sizeof(Bullet));
+		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, -1, -1, tex, 20);
+		tmp->next = *bullets;
+		*bullets = tmp;
+	}
 }

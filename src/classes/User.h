@@ -1,7 +1,7 @@
 class User : public Boat {
 	public:
 		User();
-		void place(int, SDL_Event*, texture*, Water*, struct list**);
+		void place(int, SDL_Event*, texture*, Water*, Bullet**);
 		void handle_input();
 		void move();
 	private:

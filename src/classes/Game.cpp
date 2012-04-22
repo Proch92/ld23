@@ -14,9 +14,6 @@ Game::Game() {
 	//spawn character
 	user.place(300, &event, textures, &water, &bullets);
 	
-	//---- TEMP ---- spawn enemy
-	//enemy.place(500, textures, &water, &bullets, &user);
-	
 	//misc
 	bullets = NULL;
 	enemies = NULL;
@@ -43,48 +40,45 @@ void Game::start() {
 			
 			user.handle_input();
 		}
+		
 		//move objects
 		water.compute();
 		water.move();
 		
 		if(user.death())
-			game_over();
+			game_over(&quit);
 		user.floatUp();
 		user.move();
 		
 		//spawn pups
 		if(rand()%900 < 2) {
 			Pup *tmp;
+			printf("1\n");
 			tmp = (Pup*) malloc(sizeof(Pup));
+			printf("2\n");
 			tmp->spawn((rand()%(WATER_WIDTH - PUP_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, rand()%3);
-			struct list *new_elem;
-			new_elem = (struct list*) malloc(sizeof(struct list));
-			new_elem->data = tmp;
-			new_elem->next = pups;
-			pups = new_elem;
+			tmp->next = pups;
+			pups = tmp;
 		}		
 		
 		//spawn enemies
 		if(rand()%1000 < 3) {
 			Enemy *tmp;
+			printf("3\n");
 			tmp = (Enemy*) malloc(sizeof(Enemy));
+			printf("4\n");
 			tmp->place((rand()%(WATER_WIDTH - BOAT_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, &water, &bullets, &user);
-			struct list *new_elem;
-			new_elem = (struct list*) malloc(sizeof(struct list));
-			new_elem->data = tmp;
-			new_elem->next = enemies;
-			enemies = new_elem;
+			tmp->next = enemies;
+			enemies = tmp;
 		}
-		
-		struct list *tmp, *prev;
 		
 		//move pups
 		Pup *pup_ptr;
-		tmp = pups;
-		prev = NULL;
-		while(tmp != NULL) {
+		Pup *prev_pup;
+		pup_ptr = pups;
+		prev_pup = NULL;
+		while(pup_ptr != NULL) {
 			bool to_trash = false;
-			pup_ptr = (Pup*)(tmp->data);
 			pup_ptr->move();
 			if(pup_ptr->y >= (SCREEN_HEIGHT / 2) + 10)
 				to_trash = true;
@@ -92,102 +86,92 @@ void Game::start() {
 				pup_ptr->pickup(&user);
 				to_trash = true;
 			}
-			struct list *list_ptr = enemies;
 			Enemy *enemy_ptr;
-			while(list_ptr != NULL) {
-				enemy_ptr = (Enemy*)(list_ptr->data);
+			enemy_ptr = enemies;
+			while(enemy_ptr != NULL) {
 				if(pup_ptr->x < enemy_ptr->x + BOAT_WIDTH && pup_ptr->x + PUP_WIDTH > enemy_ptr->x && pup_ptr->y < enemy_ptr->y + BOAT_HEIGHT && pup_ptr->y + PUP_HEIGHT > enemy_ptr->y) {
 					pup_ptr->pickup(enemy_ptr);
 					to_trash = true;
 				}
-				list_ptr = list_ptr->next;
+				enemy_ptr = enemy_ptr->next;
 			}
 			if(to_trash) {
-				free(pup_ptr);
-				if(prev != NULL) {
-					prev->next = tmp->next;
-					free(tmp);
-					tmp = prev->next;
+				if(prev_pup != NULL) {
+					prev_pup->next = pup_ptr->next;
+					free(pup_ptr);
+					pup_ptr = prev_pup->next;
 				}
 				else {
-					pups = tmp->next;
-					free(tmp);
-					tmp = pups;
+					pups = pup_ptr->next;
+					free(pup_ptr);
+					pup_ptr = pups;
 				}
 			}
 			else {
-				prev = tmp;
-				tmp = tmp->next;
+				prev_pup = pup_ptr;
+				pup_ptr = pup_ptr->next;
 			}
 		}
 		
 		//enemies
-		Enemy *enemy;
-		tmp = enemies;
-		prev = NULL;
-		while(tmp != NULL) {
-			enemy = (Enemy*)(tmp->data);
-			enemy->floatUp();
-			enemy->ai();
-			enemy->move();
-			if(enemy->death()) {
-				free(enemy);
-				if(prev != NULL) {
-					prev->next = tmp->next;
-					free(tmp);
-					tmp = prev->next;
+		Enemy *enemy_ptr, *prev_enemy;
+		enemy_ptr = enemies;
+		prev_enemy = NULL;
+		while(enemy_ptr != NULL) {
+			enemy_ptr->floatUp();
+			enemy_ptr->ai();
+			enemy_ptr->move();
+			if(enemy_ptr->death()) {
+				if(prev_enemy != NULL) {
+					prev_enemy->next = enemy_ptr->next;
+					free(enemy_ptr);
+					enemy_ptr = prev_enemy->next;
 				}
 				else {
-					enemies = tmp->next;
-					free(tmp);
-					tmp = enemies;
+					enemies = enemy_ptr->next;
+					free(enemy_ptr);
+					enemy_ptr = enemies;
 				}
 			}
 			else {
-				prev = tmp;
-				tmp = tmp->next;
+				prev_enemy = enemy_ptr;
+				enemy_ptr = enemy_ptr->next;
 			}
 		}
 		
 		//move bullets
-		tmp = bullets;
-		prev = NULL;
-		Bullet *bullet_ptr;
-		while(tmp != NULL) {
-			bullet_ptr = ((Bullet*)(tmp->data));
+		Bullet *bullet_ptr, *prev_bullet;
+		bullet_ptr = bullets;
+		prev_bullet = NULL;
+		while(bullet_ptr != NULL) {
 			bullet_ptr->move();
 			if(bullet_ptr->y > (SCREEN_HEIGHT / 2)) {
 				water.giveInput(bullet_ptr->x - ((SCREEN_WIDTH - WATER_WIDTH) / 2), 40);
 				
 				if(bullet_ptr->x < user.x + BOAT_WIDTH && bullet_ptr->x + BULLET_WIDTH > user.x)
 					user.hit();
-					
-				struct list *list_ptr;
-				list_ptr = enemies;
-				Enemy *enemy_ptr;
-				while(list_ptr != NULL) {
-					enemy_ptr = ((Enemy*)(list_ptr->data));
+				
+				Enemy *enemy_ptr = enemies;
+				while(enemy_ptr != NULL) {
 					if(bullet_ptr->x < enemy_ptr->x + BOAT_WIDTH && bullet_ptr->x + BULLET_WIDTH > enemy_ptr->x)
 						enemy_ptr->hit();
-					list_ptr = list_ptr->next;
-				}	
-							
-				free(bullet_ptr);
+					enemy_ptr = enemy_ptr->next;
+				}
 				
-				if(prev != NULL) {
-					prev->next = tmp->next;
-					free(tmp);
-					tmp = prev->next;
+				if(prev_bullet != NULL) {
+					prev_bullet->next = bullet_ptr->next;
+					free(bullet_ptr);
+					bullet_ptr = prev_bullet->next;
 				}
 				else {
-					bullets = tmp->next;
-					free(tmp);
-					tmp = bullets;
+					bullets = bullet_ptr->next;
+					free(bullet_ptr);
+					bullet_ptr = bullets;
 				}
 			}
 			else {
-				prev = tmp;
-				tmp = tmp->next;
+				prev_bullet = bullet_ptr;
+				bullet_ptr = bullet_ptr->next;
 			}
 		}
 		
@@ -205,27 +189,28 @@ void Game::render() {
 	
 	user.show();
 	
-	struct list *tmp;
-	
 	//show pups
-	tmp = pups;
-	while(tmp != NULL) {
-		((Pup*)(tmp->data))->show();
-		tmp = tmp->next;
+	Pup *pup_ptr;
+	pup_ptr = pups;
+	while(pup_ptr != NULL) {
+		pup_ptr->show();
+		pup_ptr = pup_ptr->next;
 	}
 	
 	//show enemies
-	tmp = enemies;
-	while(tmp != NULL) {
-		((Enemy*)(tmp->data))->show();
-		tmp = tmp->next;
+	Enemy *enemy_ptr;
+	enemy_ptr = enemies;
+	while(enemy_ptr != NULL) {
+		enemy_ptr->show();
+		enemy_ptr = enemy_ptr->next;
 	}
 	
 	//show bullets
-	tmp = bullets;
-	while(tmp != NULL) {
-		((Bullet*)(tmp->data))->show();
-		tmp = tmp->next;
+	Bullet *bullet_ptr;
+	bullet_ptr = bullets;
+	while(bullet_ptr != NULL) {
+		bullet_ptr->show();
+		bullet_ptr = bullet_ptr->next;
 	}
 	
 	water.show();
@@ -245,7 +230,7 @@ void Game::load_textures() {
 	load_image(&textures[20], "src/data/bullet/bullet.bmp", BULLET_WIDTH, BULLET_HEIGHT);
 }
 
-void Game::game_over() {
+void Game::game_over(bool* quit) {
 	printf("game over! you lose!\n");
-	exit(1);
+	*quit = true;
 }

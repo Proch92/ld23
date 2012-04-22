@@ -5,16 +5,13 @@ class Game {
 		void render();
 		void load_textures();
 	private:
-		void game_over();
+		void game_over(bool*);
 		texture textures[30];
 		Timer fps;
 		SDL_Event event;
 		Water water;
 		User user;
-		struct list *bullets;
-		struct list *enemies;
-		struct list *pups;
-		
-		//temp
-		Enemy enemy;
+		Bullet *bullets;
+		Enemy *enemies;
+		Pup *pups;
 };

@@ -5,6 +5,7 @@ class Bullet {
 		void move();
 		void show();
 		float x, y;
+		Bullet *next;
 	private:
 		float xvel, yvel;
 		texture* tex;

@@ -10,7 +10,6 @@ bool init_GL();
 void clean_up();
 
 int main() {
-	texture menutex[5];
 	Uint8 response;
 	
 	if(!init()) return 0;
@@ -24,7 +23,7 @@ int main() {
 	return 1;
 }
 
-void *load_image(texture *tex, /*std::string*/char* filename, int w, int h) {
+void *load_image(texture *tex, /*std::string*/const char* filename, int w, int h) {
 	SDL_Surface *surface;
 	
 	tex->w = w;
@@ -46,6 +45,8 @@ void *load_image(texture *tex, /*std::string*/char* filename, int w, int h) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
 	
 	free(surface);
+	
+	return NULL;
 }
 
 void apply_surface( int x, int y, int w, int h, texture tex) {

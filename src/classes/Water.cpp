@@ -105,9 +105,7 @@ void Water::compute() {
 }
 
 void Water::move() {
-	int i;
-	static int t = 0;
-	
+	int i;	
 	
 	for (i=1; i!=LENGHT; i++)
 		particles[i].height += particles[i].vel * (delta.get_ticks() / 1000.f) * DENSITY;
