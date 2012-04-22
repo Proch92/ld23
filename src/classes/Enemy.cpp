@@ -5,7 +5,7 @@ Enemy::Enemy() {
 
 void Enemy::place(int xpos, texture* t, Water* w, Bullet **b, User* u) {
 	Boat::place(xpos, t, w, b);
-	max_health = 1000;
+	max_health = 300;
 	health = max_health;
 	tex_index = 11;
 	reload.start();
@@ -80,7 +80,7 @@ void Enemy::action() {
 	
 	Bullet *tmp;
 	
-	if(!double_shot_on) {		
+	if(!double_shot_on) {
 		tmp = (Bullet*) malloc(sizeof(Bullet));
 		tmp->spawn(x + (BOAT_WIDTH / 2), y + (BOAT_HEIGHT / 2) - 5, user_direction, -1, tex, 20);
 		tmp->next = *bullets;

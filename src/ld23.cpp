@@ -8,6 +8,8 @@ SDL_Surface *screen;
 bool init();
 bool init_GL();
 void clean_up();
+void intro();
+bool game_over_screen();
 
 int main() {
 	Uint8 response;
@@ -15,8 +17,12 @@ int main() {
 	if(!init()) return 0;
 	
 	response = menu_start();
-	if(response)
+	while(response) {
+		response = false;
+		intro();
 		Game game;
+		response = game_over_screen();
+	}
 	
 	clean_up();
 	
@@ -113,3 +119,78 @@ void clean_up() {
 	glDisable(GL_TEXTURE_2D);
     SDL_Quit();
 }
+
+void intro() {
+	texture pages[6];
+	
+	load_image(&pages[0], "src/data/story/1.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[1], "src/data/story/2.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[2], "src/data/story/3.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[3], "src/data/story/4.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[4], "src/data/story/5.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&pages[5], "src/data/story/6.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	
+	bool quit = false;
+	SDL_Event event;
+	int page_number = 0;
+	Timer fps;
+	
+	fps.start();
+	
+	while(!quit) {
+		bool clicked = false;
+		
+		while(SDL_PollEvent(&event)) {
+			if(event.type == SDL_MOUSEBUTTONDOWN)
+				clicked = true;
+		}
+		
+		apply_surface(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, pages[page_number]);
+		
+		SDL_GL_SwapBuffers(); //update screen
+		
+		if(fps.get_ticks() < 16)
+			SDL_Delay(16 - fps.get_ticks());
+		
+		if(clicked)
+			page_number++;
+		
+		if(page_number == 6)
+			quit = true;
+		
+		fps.start();
+	}
+}
+
+bool game_over_screen() {
+	texture gameover;
+	
+	load_image(&gameover, "src/data/gameover/gameover.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	
+	bool quit = false;
+	SDL_Event event;
+	Timer fps;
+	
+	fps.start();
+	
+	while(!quit) {		
+		while(SDL_PollEvent(&event)) {
+			if(event.type == SDL_MOUSEBUTTONDOWN)
+				return false;
+			if(event.type == SDL_KEYDOWN)
+				if(event.key.keysym.sym == SDLK_r)
+					return true;
+		}
+		
+		apply_surface(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, gameover);
+		
+		SDL_GL_SwapBuffers(); //update screen
+		
+		if(fps.get_ticks() < 25)
+			SDL_Delay(25 - fps.get_ticks());
+
+		fps.start();
+	}
+	return false;
+}
+

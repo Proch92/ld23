@@ -21,11 +21,11 @@ void *load_image(texture *tex, /*std::string*/const char* filename, int w, int h
 void apply_surface( int x, int y, int w, int h, texture tex);
 void drawLine(int x1, int y1, int x2, int y2);
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 #define SCREEN_BPP 32
 
-#define WATER_WIDTH 900
+#define WATER_WIDTH 600
 #define WATER_DEEP 50
 const float  WATER_FRICTION = 0.03;
 
@@ -39,7 +39,7 @@ const float GRAVITY = 0.01;
 
 #define BULLET_WIDTH 8
 #define BULLET_HEIGHT 8
-#define BULLET_DAMAGE 1001
+#define BULLET_DAMAGE 400
 
 //ai
 #define AI_DISTANCE 200

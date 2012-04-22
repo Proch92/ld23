@@ -51,11 +51,9 @@ void Game::start() {
 		user.move();
 		
 		//spawn pups
-		if(rand()%900 < 2) {
+		if(rand()%1000 < 2) {
 			Pup *tmp;
-			printf("1\n");
 			tmp = (Pup*) malloc(sizeof(Pup));
-			printf("2\n");
 			tmp->spawn((rand()%(WATER_WIDTH - PUP_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, rand()%3);
 			tmp->next = pups;
 			pups = tmp;
@@ -64,9 +62,7 @@ void Game::start() {
 		//spawn enemies
 		if(rand()%1000 < 3) {
 			Enemy *tmp;
-			printf("3\n");
 			tmp = (Enemy*) malloc(sizeof(Enemy));
-			printf("4\n");
 			tmp->place((rand()%(WATER_WIDTH - BOAT_WIDTH)) + ((SCREEN_WIDTH - WATER_WIDTH) / 2), textures, &water, &bullets, &user);
 			tmp->next = enemies;
 			enemies = tmp;
@@ -187,6 +183,8 @@ void Game::start() {
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	apply_surface(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, textures[0]);
+	
 	user.show();
 	
 	//show pups
@@ -215,10 +213,15 @@ void Game::render() {
 	
 	water.show();
 	
+	apply_surface(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, textures[1]);
+	
 	SDL_GL_SwapBuffers(); //update screen
 }
 
 void Game::load_textures() {
+	//ambient
+	load_image(&textures[0], "src/data/ambient/back.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
+	load_image(&textures[1], "src/data/ambient/front.bmp", SCREEN_WIDTH, SCREEN_HEIGHT);
 	//boats
 	load_image(&textures[10], "src/data/boats/user.bmp", BOAT_WIDTH, BOAT_HEIGHT);
 	load_image(&textures[11], "src/data/boats/enemy.bmp", BOAT_WIDTH, BOAT_HEIGHT);
